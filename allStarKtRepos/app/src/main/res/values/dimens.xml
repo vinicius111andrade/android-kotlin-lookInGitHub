@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Elevation -->
+    <dimen name="elevation_1x">2dp</dimen>
+    <dimen name="elevation_2x">4dp</dimen>
+    <dimen name="elevation_3x">6dp</dimen>
+    <dimen name="elevation_4x">8dp</dimen>
+
+    <!-- Corner Radius -->
+    <dimen name="corner_radius_xxsmall_inner">2dp</dimen>
+    <dimen name="corner_radius_xxsmall">4dp</dimen>
+    <dimen name="corner_radius_xsmall_inner">4dp</dimen>
+    <dimen name="corner_radius_xsmall">6dp</dimen>
+    <dimen name="corner_radius_small_inner">8dp</dimen>
+    <dimen name="corner_radius_small">10dp</dimen>
+    <dimen name="corner_radius_medium_inner">10dp</dimen>
+    <dimen name="corner_radius_medium">12dp</dimen>
+    <dimen name="corner_radius_xmedium_inner">14dp</dimen>
+    <dimen name="corner_radius_xmedium">16dp</dimen>
+    <dimen name="corner_radius_large_inner">18dp</dimen>
+    <dimen name="corner_radius_large">20dp</dimen>
+    <dimen name="corner_radius_xlarge_inner">24dp</dimen>
+    <dimen name="corner_radius_xlarge">26dp</dimen>
+
+    <!-- Text -->
+    <dimen name="text_size_xsmall">6sp</dimen>
+    <dimen name="text_size_small">8sp</dimen>
+    <dimen name="text_size_medium">10sp</dimen>
+    <dimen name="text_size_xmedium">12sp</dimen>
+    <dimen name="text_size_middle">14sp</dimen>
+    <dimen name="text_size_middle_large">16sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_smlarge">20sp</dimen>
+    <dimen name="text_size_mlarge">22sp</dimen>
+    <dimen name="text_size_mxlarge">24sp</dimen>
+    <dimen name="text_size_mxxlarge">26sp</dimen>
+    <dimen name="text_size_xlarge">30sp</dimen>
+    <dimen name="text_size_xmlarge">36sp</dimen>
+    <dimen name="text_size_xxlarge">40sp</dimen>
+    <dimen name="text_size_xxxlarge">48sp</dimen>
+
+    <!-- Spacings and Margins -->
+    <dimen name="spacing_xsmall">2dp</dimen>
+    <dimen name="spacing_small">3dp</dimen>
+    <dimen name="spacing_medium">5dp</dimen>
+    <dimen name="spacing_xmedium">8dp</dimen>
+    <dimen name="spacing_middle">10dp</dimen>
+    <dimen name="spacing_middle_large">12dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="spacing_smlarge">18dp</dimen>
+    <dimen name="spacing_mlarge">20dp</dimen>
+    <dimen name="spacing_mxlarge">25dp</dimen>
+    <dimen name="spacing_xlarge">35dp</dimen>
+    <dimen name="spacing_xmlarge">40dp</dimen>
+    <dimen name="spacing_xxlarge">50dp</dimen>
+    <dimen name="spacing_xxxlarge">56dp</dimen>
+    <dimen name="spacing_60">60dp</dimen>
+    <dimen name="spacing_70">70dp</dimen>
+    <dimen name="spacing_80">80dp</dimen>
+
+    <!-- Icon Sizes -->
+    <dimen name="ic_size_small">16dp</dimen>
+    <dimen name="ic_size_medium">32dp</dimen>
+    <dimen name="ic_size_large">64dp</dimen>
+    <dimen name="ic_size_huge">128dp</dimen>
+    <dimen name="ic_size_xhuge">180dp</dimen>
+
+</resources>

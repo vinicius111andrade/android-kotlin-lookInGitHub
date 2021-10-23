@@ -1,3 +1,16 @@
 <resources>
+
+    <!-- App -->
     <string name="app_name">AllStarKtRepos</string>
+
+    <!-- Screen Titles -->
+    <string name="title_recycler_view">Most Starred Kotlin Repositories</string>
+
+    <!-- Repository -->
+    <string name="repo_title">Repo Title PlaceHolder</string>
+    <string name="repo_author_name">John Kotlin Java</string>
+
+    <!-- Action -->
+    <string name="action_go_to_github">Go to repository</string>
+
 </resources>
