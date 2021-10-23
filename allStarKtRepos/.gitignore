@@ -1,15 +1,106 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+
+# Built application files
+*.apk
+*.aar
+*.ap_
+*.aab
+*.zip
+*.dex
+*.class
+*.log
+*.iml
+*.hprof
+*debug.log
+
+output-metadata.json
+
+# Generated files
+bin/
+gen/
+out/
+tmp/
+build/
+app/build/
+app/release/
+app/schemas/
+app/src/debug/
+!**/src/**/build
+!**/test/**/build
+
+# Local configuration file (sdk path, etc)
 local.properties
+
+.firebaserc
+.project
+.settings
+.classpath
+.externalNativeBuild
+.cxx/
+.navigation/
+proguard/
+captures/
+
+/.gradle/
+.gradle/
+.gradle/*
+.gradle/**/
+
+# JetBrains IDE
+!**/testData/**/*.iml
+.idea/libraries
+.idea/caches
+.idea/workspace.xml
+.idea/compiler.xml
+.idea/misc.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/modules.xml
+.idea/encodings.xml
+.idea/navEditor.xml
+
+
+# Keystore files
+# Uncomment the following lines if you do not want to check your keystore files in.
+#*.jks
+#*.keystore
+
+# Google Services (e.g. APIs or Firebase)
+# google-services.json
+
+# Freeline
+freeline.py
+freeline/
+freeline_project_description.json
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/readme.md
+
+# Version control
+vcs.xml
+
+# lint
+lint/intermediates/
+lint/generated/
+lint/outputs/
+lint/tmp/
+# lint/reports/
+
+kotlin-ultimate/
+.rpt2_cache/
+libraries/tools/kotlin-test-js-runner/lib/
+libraries/tools/kotlin-source-map-loader/lib/
+src/androidTestDebug/java/delivery/borabora/ui/home/
+src/main/java/delivery/borabora/data/dao/
+src/main/java/delivery/borabora/data/source/local/
+.idea/modules/bindingValidator/
+.idea/modules/libBindingValidator/
+.idea/modules/libValidator/
+.idea/modules/libraryBindingValidator/
+app/src/androidTestDebug/java/delivery/borabora/ui/home/
+libraryRuntimePermission/libs/
