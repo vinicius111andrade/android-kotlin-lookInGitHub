@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_middle_large"
+        tools:context=".ui.main.MainActivity">
+
+        <TextView
+            android:id="@+id/tvRecyclerViewTitle"
+            style="@style/allStarKtRepos.texts.mainScreenTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/title_recycler_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewRepos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:orientation="vertical"
+            app:layoutManager="LinearLayoutManager"
+            tools:itemCount="5" />
+
+<!--        tools:listitem="@layout/item_list"-->
+
+    </LinearLayout>
+
+</layout>
