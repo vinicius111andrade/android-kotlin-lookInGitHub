@@ -6,7 +6,7 @@ import com.vdemelo.allstarktrepos.data.model.Owner
 /**
  * Created by Vinicius Andrade on 10/23/2021.
  */
-data class Repo (
+data class GithubRepo (
     @SerializedName("name") val name: String = "",
     @SerializedName("owner") val owner: Owner = Owner(),
     @SerializedName("stargazers_count") val stargazersCount : Int = 0,
