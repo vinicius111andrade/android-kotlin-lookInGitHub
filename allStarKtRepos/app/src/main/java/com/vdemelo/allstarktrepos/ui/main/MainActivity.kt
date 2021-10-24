@@ -2,7 +2,13 @@ package com.vdemelo.allstarktrepos.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import com.vdemelo.allstarktrepos.data.api.GithubApi
+import com.vdemelo.allstarktrepos.data.repository.PageKeyRepository
 import com.vdemelo.allstarktrepos.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -10,7 +16,22 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val mainViewModel by viewModel<MainViewModel>()
+
+    // This will prevent state loss
+    private val viewModel: MainViewModel by viewModels {
+        object : AbstractSavedStateViewModelFactory(this, null) {
+            override fun <T : ViewModel?> create(
+                key: String,
+                modelClass: Class<T>,
+                handle: SavedStateHandle
+            ): T {
+                @Suppress("UNCHECKED_CAST")
+                return MainViewModel(handle, PageKeyRepository(GithubApi.create())) as T
+            }
+        }
+    }
+
+//    private val mainViewModel by viewModel<MainViewModel>()
 //    private val recyclerView: RecyclerView get() = binding.recyclerViewRepos
 //    private val reposRecyclerAdapter: RepoAdapter = RepoAdapter()
 
@@ -21,7 +42,6 @@ class MainActivity : AppCompatActivity() {
 
         initUI()
         initObservers()
-        mainViewModel.refresh()
     }
 
     private fun initUI() {

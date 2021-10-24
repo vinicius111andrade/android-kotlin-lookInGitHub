@@ -13,6 +13,6 @@ val viewModelModule = module {
 
 val serviceModule = module {
 //    single {
-//        IssuesApiService()
+//        PageKeyRepository(GithubApi.create())
 //    }
 }

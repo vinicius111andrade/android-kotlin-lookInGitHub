@@ -13,4 +13,9 @@
     <!-- Action -->
     <string name="action_go_to_github">Go to repository</string>
 
+    <!-- Image Descriptions -->
+    <string name="description_star">This is a star</string>
+    <string name="description_git_fork">This is a git fork</string>
+    <string name="description_avatar">This is the repository\'s owner profile picture</string>
+
 </resources>

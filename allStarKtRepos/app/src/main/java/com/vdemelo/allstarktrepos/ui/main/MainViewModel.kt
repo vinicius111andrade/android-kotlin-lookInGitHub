@@ -1,57 +1,53 @@
 package com.vdemelo.allstarktrepos.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import io.reactivex.disposables.CompositeDisposable
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.vdemelo.allstarktrepos.data.model.GithubRepo
+import com.vdemelo.allstarktrepos.data.repository.PageKeyRepository
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 
-class MainViewModel: ViewModel() {
+class MainViewModel(
+    private val savedStateHandle: SavedStateHandle,
+    private val repository: PageKeyRepository
+): ViewModel() {
 
-//    private val reposApi = ReposApiService()
-    private val disposable = CompositeDisposable()
-
-//    private var _repos = MutableLiveData<List<Repo>>()
-//    val repos: LiveData<List<Repo>>
-//        get() = _repos
-
-    private val _loadError = MutableLiveData<Boolean>(false)
-    val loadError: LiveData<Boolean>
-        get() = _loadError
-
-    private val _loading = MutableLiveData<Boolean>(false)
-    val loading: LiveData<Boolean>
-        get() = _loading
-
-    fun refresh() {
-        fetchFromRemote()
+    companion object {
+        const val KEY_LANGUAGE = "language"
+        const val DEFAULT_LANGUAGE = "kotlin"
     }
 
-    private fun fetchFromRemote() {
-//        _loading.postValue(true)
-//        disposable.add(
-//            reposApi.getRepos()
-//                .subscribeOn(Schedulers.newThread())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeWith(object: DisposableSingleObserver<List<Repo>>() {
-//
-//                    override fun onSuccess(repos: List<Repo>) {
-//                        _repos.postValue(repos)
-//                        _loadError.postValue(false)
-//                        _loading.postValue(false)
-//                    }
-//
-//                    override fun onError(e: Throwable) {
-//                        _loadError.postValue(true)
-//                        _loading.postValue(false)
-//                        e.printStackTrace()
-//                    }
-//                })
-//        )
+    init {
+        if (!savedStateHandle.contains(KEY_LANGUAGE)) {
+            savedStateHandle.set(KEY_LANGUAGE, DEFAULT_LANGUAGE)
+        }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        disposable.clear()
+    private val clearListCh = Channel<Unit>(Channel.CONFLATED)
+
+    val posts = flowOf(
+        clearListCh.receiveAsFlow().map { PagingData.empty<GithubRepo>() },
+        savedStateHandle.getLiveData<String>(KEY_LANGUAGE)
+            .asFlow()
+            .flatMapLatest { repository.reposOfGithub(it, 30) }
+            // cachedIn() shares the paging state across multiple consumers of posts,
+            // e.g. different generations of UI across rotation config change
+            .cachedIn(viewModelScope)
+    ).flattenMerge(2)
+
+    fun shouldShowLanguage(language: String) = savedStateHandle.get<String>(KEY_LANGUAGE) != language
+
+    fun showLanguage(language: String) {
+        if (!shouldShowLanguage(language))
+            return
+
+        clearListCh.trySend(Unit).isSuccess
+
+        savedStateHandle.set(KEY_LANGUAGE, language)
     }
 
 }
