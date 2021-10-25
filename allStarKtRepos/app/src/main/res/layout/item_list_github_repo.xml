@@ -43,13 +43,16 @@
                 android:contentDescription="@string/description_star"
                 android:src="@drawable/star"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvRepositoryName" />
+                app:layout_constraintTop_toBottomOf="@id/tvRepositoryName"
+                app:tint="@color/black" />
 
             <TextView
                 android:id="@+id/tvStarCount"
+                style="@style/allStarKtRepos.texts.itemList.Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xmedium"
+                android:text="@{githubRepo.stargazersCount}"
                 app:layout_constraintBottom_toBottomOf="@id/imgStar"
                 app:layout_constraintStart_toEndOf="@id/imgStar"
                 app:layout_constraintTop_toTopOf="@id/imgStar"
@@ -68,9 +71,11 @@
 
             <TextView
                 android:id="@+id/tvForkCount"
+                style="@style/allStarKtRepos.texts.itemList.Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xmedium"
+                android:text="@{githubRepo.forksCount}"
                 app:layout_constraintBottom_toBottomOf="@id/imgFork"
                 app:layout_constraintStart_toEndOf="@id/imgFork"
                 app:layout_constraintTop_toTopOf="@id/imgFork"
@@ -81,30 +86,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.35" />
+                app:layout_constraintGuide_percent="0.3" />
 
             <ImageView
                 android:id="@+id/imgOwner"
-                android:layout_width="@dimen/ic_size_small"
-                android:layout_height="@dimen/ic_size_small"
+                android:layout_width="@dimen/ic_size_large"
+                android:layout_height="@dimen/ic_size_large"
                 android:layout_marginStart="@dimen/spacing_xmedium"
                 android:layout_marginTop="@dimen/spacing_large"
                 android:contentDescription="@string/description_star"
-                android:src="@drawable/git_fork"
-                app:layout_constraintTop_toBottomOf="@id/tvRepositoryName"
+                android:src="@drawable/account_circle"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/guideline"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/tvRepositoryName"
+                app:tint="@color/black" />
 
             <TextView
                 android:id="@+id/tvOwnerName"
+                style="@style/allStarKtRepos.texts.itemList.Description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xmedium"
+                android:layout_marginTop="@dimen/spacing_xmedium"
+                android:text="@{githubRepo.owner.login}"
                 android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@id/imgOwner"
-                app:layout_constraintStart_toStartOf="@id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="40" />
+                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/imgOwner"
+                tools:text="Owner Name" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
