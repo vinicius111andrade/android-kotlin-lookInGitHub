@@ -66,8 +66,8 @@ class StarredRepository(
 
             Timber.d("GithubRepository ---- response $response")
 
-            val repos = response.items
-            inMemoryCache.addAll(repos)
+            val repos: List<GithubRepo?> = response.items
+            inMemoryCache.addAll(repos.filterNotNull())
 
             val reposByName = reposByName(query)
             searchResults.emit(SearchResult.Success(reposByName))

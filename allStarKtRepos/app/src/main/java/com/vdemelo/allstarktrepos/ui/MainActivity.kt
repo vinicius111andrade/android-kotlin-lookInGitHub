@@ -4,10 +4,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.vdemelo.allstarktrepos.data.api.GithubApi
+import com.vdemelo.allstarktrepos.data.model.SearchResult
 import com.vdemelo.allstarktrepos.databinding.ActivityMainBinding
 import com.vdemelo.allstarktrepos.di.Injection
 import com.vdemelo.allstarktrepos.ui.adapter.GithubRepoAdapter
@@ -33,24 +38,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        setupRecyclerView()
+        binding.apply {
 
-        binding.bindState(
-            uiState = viewModel.state,
-            uiActions = viewModel.action
-        )
+            setupRecyclerView()
+
+            bindState(
+                uiState = viewModel.state,
+                uiActions = viewModel.action
+            )
+
+        }
     }
 
     private fun ActivityMainBinding.bindState(
         uiState: LiveData<UiState>,
         uiActions: (UiAction) -> Unit
     ) {
+        val githubRepoAdapter = GithubRepoAdapter()
+        recyclerview.adapter = githubRepoAdapter
+
         bindSearch(
             uiState = uiState,
             onQueryChanged = uiActions
         )
         bindList(
-            repoAdapter = repoAdapter,
+            githubRepoAdapter = githubRepoAdapter,
             uiState = uiState,
             onScrollChanged = uiActions
         )
@@ -92,9 +104,63 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupRecyclerView() {
-        binding.recyclerview.apply {
-            adapter = GithubRepoAdapter()
+    private fun ActivityMainBinding.bindList(
+        githubRepoAdapter: GithubRepoAdapter,
+        uiState: LiveData<UiState>,
+        onScrollChanged: (UiAction.Scroll) -> Unit
+    ) {
+        setupScrollListener(onScrollChanged)
+
+        uiState
+            .map(UiState::searchResult)
+            .distinctUntilChanged()
+            .observe(this@MainActivity) { result ->
+                when (result) {
+                    is SearchResult.Success -> {
+                        showEmptyList(result.data.isEmpty())
+                        githubRepoAdapter.submitList(result.data)
+                    }
+                    is SearchResult.Error -> {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "\uD83D\uDE35 Wooops $result.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+    }
+
+    private fun ActivityMainBinding.showEmptyList(show: Boolean) {
+        emptyListMessage.isVisible = show
+        recyclerview.isVisible = !show
+    }
+
+    private fun ActivityMainBinding.setupScrollListener(
+        onScrollChanged: (UiAction.Scroll) -> Unit
+    ) {
+        val layoutManager = recyclerview.layoutManager as LinearLayoutManager
+        recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val totalItemCount = layoutManager.itemCount
+                val visibleItemCount = layoutManager.childCount
+                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+
+                onScrollChanged(
+                    UiAction.Scroll(
+                        visibleItemCount = visibleItemCount,
+                        lastVisibleItemPosition = lastVisibleItem,
+                        totalItemCount = totalItemCount
+                    )
+                )
+            }
+        })
+    }
+
+    private fun ActivityMainBinding.setupRecyclerView() {
+        recyclerview.apply {
+
             addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
         }
     }

@@ -1,10 +1,13 @@
 package com.vdemelo.allstarktrepos.ui.adapter
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vdemelo.allstarktrepos.data.model.GithubRepo
 import com.vdemelo.allstarktrepos.databinding.ItemListGithubRepoBinding
+import timber.log.Timber
 
 /**
  * Created by Vinicius Andrade on 10/25/2021.
@@ -29,7 +32,8 @@ class GithubRepoViewHolder(
     private fun initUI() {
         binding.repoCard.setOnClickListener {
             githubRepo?.run {
-                this.html_url //TODO - go to web page
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(html_url))
+                binding.repoCard.context.startActivity(intent)
             }
         }
     }
@@ -37,7 +41,6 @@ class GithubRepoViewHolder(
     fun bind(githubRepo: GithubRepo) {
         this@GithubRepoViewHolder.githubRepo = githubRepo
         this.binding.githubRepo = githubRepo
-        //this.binding.executePendingBindings() //TODO - Maybe can be removed
     }
 
 }
