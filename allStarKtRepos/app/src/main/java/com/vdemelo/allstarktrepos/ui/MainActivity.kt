@@ -1,22 +1,24 @@
 package com.vdemelo.allstarktrepos.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.*
+import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vdemelo.allstarktrepos.data.api.GithubApi
+import com.vdemelo.allstarktrepos.data.model.GithubRepo
 import com.vdemelo.allstarktrepos.data.model.SearchResult
 import com.vdemelo.allstarktrepos.databinding.ActivityMainBinding
 import com.vdemelo.allstarktrepos.di.Injection
 import com.vdemelo.allstarktrepos.ui.adapter.GithubRepoAdapter
-import com.vdemelo.allstarktrepos.ui.adapter.GithubRepoViewHolder
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,20 +40,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        binding.apply {
-
-            setupRecyclerView()
-
-            bindState(
+        binding.bindState(
                 uiState = viewModel.state,
+                pagingData = viewModel.pagingDataFlow,
                 uiActions = viewModel.action
             )
-
-        }
     }
 
     private fun ActivityMainBinding.bindState(
-        uiState: LiveData<UiState>,
+        uiState: StateFlow<UiState>,
+        pagingData: Flow<PagingData<GithubRepo>>,
         uiActions: (UiAction) -> Unit
     ) {
         val githubRepoAdapter = GithubRepoAdapter()
@@ -64,12 +62,13 @@ class MainActivity : AppCompatActivity() {
         bindList(
             githubRepoAdapter = githubRepoAdapter,
             uiState = uiState,
+            pagingData = pagingData,
             onScrollChanged = uiActions
         )
     }
 
     private fun ActivityMainBinding.bindSearch(
-        uiState: LiveData<UiState>,
+        uiState: StateFlow<UiState>,
         onQueryChanged: (UiAction.Search) -> Unit
     ) {
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -89,10 +88,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        uiState
-            .map(UiState::query)
-            .distinctUntilChanged()
-            .observe(this@MainActivity, searchEditText::setText)
+        lifecycleScope.launch {
+            uiState
+                .map { it.query }
+                .distinctUntilChanged()
+                .collect(searchEditText::setText)
+        }
     }
 
     private fun ActivityMainBinding.updateRepoListFromInput(onQueryChanged: (UiAction.Search) -> Unit) {
@@ -106,62 +107,43 @@ class MainActivity : AppCompatActivity() {
 
     private fun ActivityMainBinding.bindList(
         githubRepoAdapter: GithubRepoAdapter,
-        uiState: LiveData<UiState>,
+        uiState: StateFlow<UiState>,
+        pagingData: Flow<PagingData<GithubRepo>>,
         onScrollChanged: (UiAction.Scroll) -> Unit
     ) {
-        setupScrollListener(onScrollChanged)
 
-        uiState
-            .map(UiState::searchResult)
-            .distinctUntilChanged()
-            .observe(this@MainActivity) { result ->
-                when (result) {
-                    is SearchResult.Success -> {
-                        showEmptyList(result.data.isEmpty())
-                        githubRepoAdapter.submitList(result.data)
-                    }
-                    is SearchResult.Error -> {
-                        Toast.makeText(
-                            this@MainActivity,
-                            "\uD83D\uDE35 Wooops $result.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-            }
-    }
+        recyclerview.addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
 
-    private fun ActivityMainBinding.showEmptyList(show: Boolean) {
-        emptyListMessage.isVisible = show
-        recyclerview.isVisible = !show
-    }
-
-    private fun ActivityMainBinding.setupScrollListener(
-        onScrollChanged: (UiAction.Scroll) -> Unit
-    ) {
-        val layoutManager = recyclerview.layoutManager as LinearLayoutManager
         recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val totalItemCount = layoutManager.itemCount
-                val visibleItemCount = layoutManager.childCount
-                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-
-                onScrollChanged(
-                    UiAction.Scroll(
-                        visibleItemCount = visibleItemCount,
-                        lastVisibleItemPosition = lastVisibleItem,
-                        totalItemCount = totalItemCount
-                    )
-                )
+                if (dy != 0) onScrollChanged(UiAction.Scroll(currentQuery = uiState.value.query))
             }
         })
-    }
+        val notLoading = githubRepoAdapter.loadStateFlow
+            // Only emit when REFRESH LoadState for RemoteMediator changes.
+            .distinctUntilChangedBy { it.source.refresh }
+            // Only react to cases where Remote REFRESH completes i.e., NotLoading.
+            .map { it.source.refresh is LoadState.NotLoading }
 
-    private fun ActivityMainBinding.setupRecyclerView() {
-        recyclerview.apply {
+        val hasNotScrolledForCurrentSearch = uiState
+            .map { it.hasNotScrolledForCurrentSearch }
+            .distinctUntilChanged()
 
-            addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
+        val shouldScrollToTop = combine(
+            notLoading,
+            hasNotScrolledForCurrentSearch,
+            Boolean::and
+        )
+            .distinctUntilChanged()
+
+        lifecycleScope.launch {
+            pagingData.collectLatest(githubRepoAdapter::submitData)
+        }
+
+        lifecycleScope.launch {
+            shouldScrollToTop.collect { shouldScroll ->
+                if (shouldScroll) recyclerview.scrollToPosition(0)
+            }
         }
     }
 

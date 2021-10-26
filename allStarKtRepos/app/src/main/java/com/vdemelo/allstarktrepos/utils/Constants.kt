@@ -6,6 +6,7 @@ package com.vdemelo.allstarktrepos.utils
 object Constants {
 
     // Paging
+    const val NETWORK_PAGE_SIZE = 30
     const val ITEMS_PER_PAGE = 30
     const val VISIBLE_THRESHOLD = 5
 
@@ -15,4 +16,5 @@ object Constants {
 
     // Handle key
     const val LAST_SEARCH_QUERY: String = "last_search_query"
+    const val LAST_QUERY_SCROLLED: String = "last_query_scrolled"
 }
