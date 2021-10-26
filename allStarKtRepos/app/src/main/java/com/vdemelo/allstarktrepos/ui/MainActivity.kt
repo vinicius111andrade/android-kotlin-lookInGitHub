@@ -17,6 +17,7 @@ import com.vdemelo.allstarktrepos.data.model.SearchResult
 import com.vdemelo.allstarktrepos.databinding.ActivityMainBinding
 import com.vdemelo.allstarktrepos.di.Injection
 import com.vdemelo.allstarktrepos.ui.adapter.GithubRepoAdapter
+import com.vdemelo.allstarktrepos.ui.adapter.LoadStateAdapter
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -53,7 +54,10 @@ class MainActivity : AppCompatActivity() {
         uiActions: (UiAction) -> Unit
     ) {
         val githubRepoAdapter = GithubRepoAdapter()
-        recyclerview.adapter = githubRepoAdapter
+        recyclerview.adapter = githubRepoAdapter.withLoadStateHeaderAndFooter(
+            header = LoadStateAdapter { githubRepoAdapter.retry() },
+            footer = LoadStateAdapter { githubRepoAdapter.retry() }
+        )
 
         bindSearch(
             uiState = uiState,

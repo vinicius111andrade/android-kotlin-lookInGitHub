@@ -12,6 +12,7 @@
 
     <!-- Action -->
     <string name="action_go_to_github">Go to repository</string>
+    <string name="action_retry">Retry</string>
 
     <!-- Hint -->
     <string name="search_hint">GitHub repositories</string>
