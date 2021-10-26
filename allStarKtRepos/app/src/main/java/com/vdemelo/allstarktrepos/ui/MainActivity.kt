@@ -149,6 +149,33 @@ class MainActivity : AppCompatActivity() {
                 if (shouldScroll) recyclerview.scrollToPosition(0)
             }
         }
+
+        lifecycleScope.launch {
+            githubRepoAdapter.loadStateFlow.collect { loadState ->
+                val isListEmpty = loadState.refresh is LoadState.NotLoading && githubRepoAdapter.itemCount == 0
+                // show empty list
+                emptyListMessage.isVisible = isListEmpty
+                // Only show the list if refresh succeeds.
+                recyclerview.isVisible = !isListEmpty
+                // Show loading spinner during initial load or refresh.
+                progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                // Show the retry state if initial load or refresh fails.
+                retryButton.isVisible = loadState.source.refresh is LoadState.Error
+
+                // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
+                val errorState = loadState.source.append as? LoadState.Error
+                    ?: loadState.source.prepend as? LoadState.Error
+                    ?: loadState.append as? LoadState.Error
+                    ?: loadState.prepend as? LoadState.Error
+                errorState?.let {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "\uD83D\uDE35 Wooops ${it.error}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
     }
 
 }
