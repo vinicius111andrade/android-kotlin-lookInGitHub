@@ -94,7 +94,7 @@
                 android:layout_height="@dimen/ic_size_large"
                 android:layout_marginStart="@dimen/spacing_xmedium"
                 android:layout_marginTop="@dimen/spacing_large"
-                android:contentDescription="@string/description_star"
+                android:contentDescription="@string/description_avatar"
                 android:src="@drawable/account_circle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/guideline"
