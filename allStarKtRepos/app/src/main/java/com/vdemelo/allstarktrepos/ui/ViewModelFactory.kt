@@ -1,0 +1,28 @@
+package com.vdemelo.allstarktrepos.ui
+
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.savedstate.SavedStateRegistryOwner
+import com.vdemelo.allstarktrepos.data.repository.StarredRepository
+
+/**
+ * Created by Vinicius Andrade on 10/25/2021.
+ */
+class ViewModelFactory(
+    owner: SavedStateRegistryOwner,
+    private val repository: StarredRepository
+) : AbstractSavedStateViewModelFactory(owner, null) {
+
+    override fun <T : ViewModel?> create(
+        key: String,
+        modelClass: Class<T>,
+        handle: SavedStateHandle
+    ): T {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return MainViewModel(repository, handle) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}

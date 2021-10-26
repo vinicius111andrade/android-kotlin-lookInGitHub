@@ -1,6 +1,7 @@
-package com.vdemelo.allstarktrepos.data.model
+package com.vdemelo.allstarktrepos.data.api
 
 import com.google.gson.annotations.SerializedName
+import com.vdemelo.allstarktrepos.data.model.GithubRepo
 
 /**
  * Created by Vinicius Andrade on 10/25/2021.

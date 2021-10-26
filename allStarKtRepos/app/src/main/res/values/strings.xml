@@ -13,6 +13,12 @@
     <!-- Action -->
     <string name="action_go_to_github">Go to repository</string>
 
+    <!-- Hint -->
+    <string name="search_hint">GitHub repositories</string>
+
+    <!-- Message -->
+    <string name="msg_no_results">No results found…</string>
+
     <!-- Image Descriptions -->
     <string name="description_star">This is a star</string>
     <string name="description_git_fork">This is a git fork</string>

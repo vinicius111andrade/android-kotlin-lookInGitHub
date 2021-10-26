@@ -1,8 +1,6 @@
 package com.vdemelo.allstarktrepos.data.api
 
-import android.util.Log
 import com.vdemelo.allstarktrepos.data.model.GithubRepo
-import com.vdemelo.allstarktrepos.data.model.SearchResponse
 import com.vdemelo.allstarktrepos.utils.Constants.ITEMS_PER_PAGE
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

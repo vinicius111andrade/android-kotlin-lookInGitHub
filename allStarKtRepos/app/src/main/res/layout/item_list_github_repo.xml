@@ -12,7 +12,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/issueCard"
+        android:id="@+id/repoCard"
         style="@style/allStarKtRepos.CardView.Issue"
         android:clickable="true"
         android:focusable="true">
