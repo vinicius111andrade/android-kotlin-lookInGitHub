@@ -32,14 +32,12 @@ class GithubPagingSource(
 
             val repos = response.items
 
-            val nextKey =
-                if (repos.isEmpty()) {
+            val nextKey: Int? =
+                if (repos.isEmpty())
                     null
-                } else {
-                // initial load size = 3 * NETWORK_PAGE_SIZE
-                // ensure we're not requesting duplicating items, at the 2nd request
-                position + (params.loadSize / NETWORK_PAGE_SIZE)
-                }
+                else
+                    position + (params.loadSize / NETWORK_PAGE_SIZE)
+
 
             LoadResult.Page(
                 data = repos,
@@ -58,14 +56,23 @@ class GithubPagingSource(
 
     }
 
-    // The refresh key is used for the initial load of the next PagingSource, after invalidation
     override fun getRefreshKey(state: PagingState<Int, GithubRepo>): Int? {
-        // We need to get the previous key (or next key if previous is null) of the page
-        // that was closest to the most recently accessed index.
-        // Anchor position is the most recently accessed index
-        return state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+
+        val anchorPosition: Int? = state.anchorPosition
+
+        val currentPageObject:  PagingSource.LoadResult.Page<Int, GithubRepo>? =
+            anchorPosition?.let {
+            state.closestPageToPosition(it)
         }
+
+        val prevKey: Int? = currentPageObject?.prevKey
+        val nextKey: Int? = currentPageObject?.nextKey
+
+        return when {
+            prevKey != null -> prevKey + 1
+            nextKey != null -> nextKey + 1
+            else -> null
+        }
+
     }
 }
