@@ -10,14 +10,12 @@ import androidx.lifecycle.*
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vdemelo.allstarktrepos.data.model.GithubRepo
-import com.vdemelo.allstarktrepos.data.model.SearchResult
 import com.vdemelo.allstarktrepos.databinding.ActivityMainBinding
 import com.vdemelo.allstarktrepos.di.Injection
 import com.vdemelo.allstarktrepos.ui.adapter.GithubRepoAdapter
-import com.vdemelo.allstarktrepos.ui.adapter.LoadStateAdapter
+import com.vdemelo.allstarktrepos.ui.adapter.GithubLoadStateAdapter
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -55,8 +53,8 @@ class MainActivity : AppCompatActivity() {
     ) {
         val githubRepoAdapter = GithubRepoAdapter()
         recyclerview.adapter = githubRepoAdapter.withLoadStateHeaderAndFooter(
-            header = LoadStateAdapter { githubRepoAdapter.retry() },
-            footer = LoadStateAdapter { githubRepoAdapter.retry() }
+            header = GithubLoadStateAdapter { githubRepoAdapter.retry() },
+            footer = GithubLoadStateAdapter { githubRepoAdapter.retry() }
         )
 
         bindSearch(

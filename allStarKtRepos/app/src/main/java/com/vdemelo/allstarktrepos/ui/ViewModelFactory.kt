@@ -4,14 +4,14 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import com.vdemelo.allstarktrepos.data.repository.StarredRepository
+import com.vdemelo.allstarktrepos.data.repository.GithubRepository
 
 /**
  * Created by Vinicius Andrade on 10/25/2021.
  */
 class ViewModelFactory(
     owner: SavedStateRegistryOwner,
-    private val repository: StarredRepository
+    private val repository: GithubRepository
 ) : AbstractSavedStateViewModelFactory(owner, null) {
 
     override fun <T : ViewModel?> create(

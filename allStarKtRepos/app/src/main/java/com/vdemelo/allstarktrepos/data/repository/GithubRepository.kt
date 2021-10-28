@@ -13,7 +13,7 @@ import timber.log.Timber
 /**
  * Created by Vinicius Andrade on 10/25/2021.
  */
-class StarredRepository(
+class GithubRepository(
     private val apiService: GithubApi
 ) {
 

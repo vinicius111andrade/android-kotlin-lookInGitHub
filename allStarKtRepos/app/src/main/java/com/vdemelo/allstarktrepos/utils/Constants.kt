@@ -6,9 +6,7 @@ package com.vdemelo.allstarktrepos.utils
 object Constants {
 
     // Paging
-    const val NETWORK_PAGE_SIZE = 30
-    const val ITEMS_PER_PAGE = 30
-    const val VISIBLE_THRESHOLD = 5
+    const val NETWORK_PAGE_SIZE = 50
 
     // API
     const val GITHUB_STARTING_PAGE_INDEX = 1

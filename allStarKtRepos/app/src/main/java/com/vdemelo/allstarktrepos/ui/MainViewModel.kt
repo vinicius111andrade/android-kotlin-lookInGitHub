@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.vdemelo.allstarktrepos.data.model.GithubRepo
-import com.vdemelo.allstarktrepos.data.repository.StarredRepository
+import com.vdemelo.allstarktrepos.data.repository.GithubRepository
 import com.vdemelo.allstarktrepos.utils.Constants.DEFAULT_QUERY
 import com.vdemelo.allstarktrepos.utils.Constants.LAST_QUERY_SCROLLED
 import com.vdemelo.allstarktrepos.utils.Constants.LAST_SEARCH_QUERY
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val repository: StarredRepository,
+    private val repository: GithubRepository,
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 

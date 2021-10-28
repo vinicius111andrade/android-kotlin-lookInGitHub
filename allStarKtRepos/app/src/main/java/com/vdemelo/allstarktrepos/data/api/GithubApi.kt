@@ -1,7 +1,6 @@
 package com.vdemelo.allstarktrepos.data.api
 
-import com.vdemelo.allstarktrepos.data.model.GithubRepo
-import com.vdemelo.allstarktrepos.utils.Constants.ITEMS_PER_PAGE
+import com.vdemelo.allstarktrepos.utils.Constants.NETWORK_PAGE_SIZE
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -25,16 +24,8 @@ interface GithubApi {
         @Query("q") query: String = "kotlin",
         @Query("sort") sort: String = "stars",
         @Query("page") page: Int = 1,
-        @Query("per_page") per_page: Int = ITEMS_PER_PAGE
+        @Query("per_page") per_page: Int = NETWORK_PAGE_SIZE
     ): SearchResponse
-
-    class ListingData(
-        val children: List<GithubChildrenResponse>,
-        val after: String?,
-        val before: String?
-    )
-
-    data class GithubChildrenResponse(val data: GithubRepo)
 
     companion object {
         private const val BASE_URL = "https://api.github.com/"

@@ -39,6 +39,7 @@
                 android:layout_width="@dimen/ic_size_small"
                 android:layout_height="@dimen/ic_size_small"
                 android:layout_marginStart="@dimen/spacing_xmedium"
+                android:layout_marginLeft="@dimen/spacing_xmedium"
                 android:layout_marginTop="@dimen/spacing_large"
                 android:contentDescription="@string/description_star"
                 android:src="@drawable/star"
@@ -49,10 +50,11 @@
             <TextView
                 android:id="@+id/tvStarCount"
                 style="@style/allStarKtRepos.texts.itemList.Description"
+                numberToText="@{githubRepo.stargazersCount}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xmedium"
-                numberToText="@{githubRepo.stargazersCount}"
+                android:layout_marginLeft="@dimen/spacing_xmedium"
                 app:layout_constraintBottom_toBottomOf="@id/imgStar"
                 app:layout_constraintStart_toEndOf="@id/imgStar"
                 app:layout_constraintTop_toTopOf="@id/imgStar"
@@ -63,6 +65,7 @@
                 android:layout_width="@dimen/ic_size_small"
                 android:layout_height="@dimen/ic_size_small"
                 android:layout_marginStart="@dimen/spacing_xmedium"
+                android:layout_marginLeft="@dimen/spacing_xmedium"
                 android:layout_marginTop="@dimen/spacing_xmedium"
                 android:contentDescription="@string/description_git_fork"
                 android:src="@drawable/git_fork"
@@ -72,10 +75,11 @@
             <TextView
                 android:id="@+id/tvForkCount"
                 style="@style/allStarKtRepos.texts.itemList.Description"
+                numberToText="@{githubRepo.forksCount}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xmedium"
-                numberToText="@{githubRepo.forksCount}"
+                android:layout_marginLeft="@dimen/spacing_xmedium"
                 app:layout_constraintBottom_toBottomOf="@id/imgFork"
                 app:layout_constraintStart_toEndOf="@id/imgFork"
                 app:layout_constraintTop_toTopOf="@id/imgFork"
@@ -90,16 +94,16 @@
 
             <ImageView
                 android:id="@+id/imgOwner"
+                imageUrl="@{githubRepo.owner.avatarUrl}"
                 android:layout_width="@dimen/ic_size_large"
                 android:layout_height="@dimen/ic_size_large"
                 android:layout_marginStart="@dimen/spacing_xmedium"
+                android:layout_marginLeft="@dimen/spacing_xmedium"
                 android:layout_marginTop="@dimen/spacing_large"
                 android:contentDescription="@string/description_avatar"
-                android:src="@drawable/account_circle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/guideline"
-                app:layout_constraintTop_toBottomOf="@id/tvRepositoryName"
-                app:tint="@color/black" />
+                app:layout_constraintTop_toBottomOf="@id/tvRepositoryName" />
 
             <TextView
                 android:id="@+id/tvOwnerName"
@@ -107,7 +111,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_xmedium"
+                android:layout_marginLeft="@dimen/spacing_xmedium"
                 android:layout_marginTop="@dimen/spacing_xmedium"
+                android:gravity="center_horizontal"
                 android:text="@{githubRepo.owner.login}"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"

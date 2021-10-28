@@ -7,7 +7,7 @@ import androidx.paging.LoadStateAdapter
 /**
  * Created by Vinicius Andrade on 10/26/2021.
  */
-class LoadStateAdapter(
+class GithubLoadStateAdapter(
     private val retry: () -> Unit
 ) : LoadStateAdapter<LoadStateViewHolder>() {
     override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {

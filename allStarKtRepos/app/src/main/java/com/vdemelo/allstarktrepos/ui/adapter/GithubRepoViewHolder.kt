@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vdemelo.allstarktrepos.data.model.GithubRepo
 import com.vdemelo.allstarktrepos.databinding.ItemListGithubRepoBinding
-import timber.log.Timber
 
 /**
  * Created by Vinicius Andrade on 10/25/2021.
@@ -40,7 +39,7 @@ class GithubRepoViewHolder(
 
     fun bind(githubRepo: GithubRepo) {
         this@GithubRepoViewHolder.githubRepo = githubRepo
-        this.binding.githubRepo = githubRepo
+        binding.githubRepo = githubRepo
     }
 
 }
