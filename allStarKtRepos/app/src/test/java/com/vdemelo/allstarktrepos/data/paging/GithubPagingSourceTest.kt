@@ -1,7 +1,6 @@
 package com.vdemelo.allstarktrepos.data.paging
 
-import androidx.paging.PagingSource.LoadResult.Page
-import androidx.paging.PagingSource.LoadParams.Refresh
+import androidx.paging.PagingSource
 import com.vdemelo.allstarktrepos.data.api.GithubApi
 import com.vdemelo.allstarktrepos.data.api.SearchResponse
 import com.vdemelo.allstarktrepos.data.model.GithubRepo
@@ -9,77 +8,93 @@ import com.vdemelo.allstarktrepos.data.model.Owner
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.*
-
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.mockito.BDDMockito.given
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 import java.util.concurrent.atomic.AtomicInteger
 
 @ExperimentalCoroutinesApi
 class GithubPagingSourceTest {
 
-    lateinit var fakeApi: MockGithubApi
-    lateinit var pagingSource: GithubPagingSource
-    private val query = "Random"
-    private val numberOfItems = 3
-    private val itemsPerPage = 5
-    private val pageIndex = 1
+    val query = "Random"
+
+    lateinit var githubRepoFactory: GithubRepoFactory
+    lateinit var myMockApi: GithubApi
+
+    @Mock lateinit var mockitoApi: GithubApi
+
+    lateinit var githubPagingSourceMyApi: GithubPagingSource
+    lateinit var githubPagingSourceMockitoApi: GithubPagingSource
 
     @Before
-    fun setUp() {
-        fakeApi = MockGithubApi()
-        pagingSource = GithubPagingSource(MockGithubApi(), query)
+    fun setup() {
+        myMockApi = MockGithubApi()
+
+        MockitoAnnotations.openMocks(this)
+
+        githubPagingSourceMyApi = GithubPagingSource(myMockApi , query)
+        githubPagingSourceMockitoApi = GithubPagingSource(mockitoApi , query)
+    }
+
+    // This test doesn't trigger Try Catch, that's why it fails
+    @Test
+    fun reviews404LoadError() = runBlockingTest {
+
+        val error = RuntimeException("404", Throwable())
+        given(mockitoApi.searchGithub()).willThrow(error)
+
+        val expectedResult = PagingSource.LoadResult.Error<Int, GithubRepo>(error)
+        assertEquals(
+            expectedResult, githubPagingSourceMockitoApi.load(
+                PagingSource.LoadParams.Refresh(
+                    key = 0,
+                    loadSize = 1,
+                    placeholdersEnabled = false
+                )
+            )
+        )
+    }
+
+    // This test doesn't trigger Try Catch, that's why it fails
+    @Test
+    fun reviewsReceivingNull() = runBlockingTest {
+        given(mockitoApi.searchGithub()).willReturn(null)
+
+        val expectedResult = PagingSource.LoadResult.Error<Int, GithubRepo>(NullPointerException())
+        assertEquals(
+            expectedResult.toString(), githubPagingSourceMockitoApi.load(
+                PagingSource.LoadParams.Refresh(
+                    key = 0,
+                    loadSize = 1,
+                    placeholdersEnabled = false
+                )
+            ).toString()
+        )
     }
 
     @Test
-    fun load() = runBlockingTest {
-
-        val key = if(pageIndex == 1) null else pageIndex - 1
-
-        val a = Page(
-            data = fakeApi.searchGithub(
-                query = query,
-                per_page = numberOfItems
-            ).items,
-            prevKey = key,
-            nextKey = numberOfItems / itemsPerPage
+    fun `reviews paging source refresh - success`() = runBlockingTest {
+        given(mockitoApi.searchGithub()).willReturn(reviewsResponse)
+        val expectedResult = PagingSource.LoadResult.Page(
+            data = reviewsResponse.reviews.map { Review(it) },
+            prevKey = null,
+            nextKey = 1
         )
-
-        val b = pagingSource.load(
-            Refresh(
-                key = key,
-                loadSize = numberOfItems,
-                placeholdersEnabled = false
-            )
-        )
-
-
         assertEquals(
-            expected = Page(
-                data = fakeApi.searchGithub(
-                    query = query,
-                    per_page = numberOfItems
-                ).items,
-                prevKey = key,
-                nextKey = numberOfItems / itemsPerPage
-            ),
-
-            actual = pagingSource.load(
-                Refresh(
-                    key = key,
-                    loadSize = numberOfItems,
+            expectedResult, reviewsPagingSource.load(
+                PagingSource.LoadParams.Refresh(
+                    key = 0,
+                    loadSize = 1,
                     placeholdersEnabled = false
                 )
             )
         )
 
 
-
     }
-
-    @Test
-    fun getRefreshKey() {
-    }
-}
 
 class GithubRepoFactory {
     private val counter = AtomicInteger(0)
