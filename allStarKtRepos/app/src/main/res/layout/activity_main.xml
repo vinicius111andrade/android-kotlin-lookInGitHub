@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_xmedium"
         android:layout_marginLeft="@dimen/spacing_xmedium"
-        android:layout_marginTop="@dimen/spacing_xmedium"
+        android:layout_marginTop="@dimen/spacing_middle"
         android:layout_marginEnd="@dimen/spacing_xmedium"
         android:layout_marginRight="@dimen/spacing_xmedium"
         app:layout_constraintEnd_toEndOf="parent"
