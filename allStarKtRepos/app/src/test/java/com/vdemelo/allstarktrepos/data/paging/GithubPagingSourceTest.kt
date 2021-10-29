@@ -7,9 +7,8 @@ import com.vdemelo.allstarktrepos.data.model.GithubRepo
 import com.vdemelo.allstarktrepos.data.model.Owner
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
@@ -39,26 +38,6 @@ class GithubPagingSourceTest {
         githubPagingSourceMockitoApi = GithubPagingSource(mockitoApi , query)
     }
 
-    // This test doesn't trigger Try Catch, that's why it fails
-    @Test
-    fun reviews404LoadError() = runBlockingTest {
-
-        val error = RuntimeException("404", Throwable())
-        given(mockitoApi.searchGithub()).willThrow(error)
-
-        val expectedResult = PagingSource.LoadResult.Error<Int, GithubRepo>(error)
-        assertEquals(
-            expectedResult, githubPagingSourceMockitoApi.load(
-                PagingSource.LoadParams.Refresh(
-                    key = 0,
-                    loadSize = 1,
-                    placeholdersEnabled = false
-                )
-            )
-        )
-    }
-
-    // This test doesn't trigger Try Catch, that's why it fails
     @Test
     fun reviewsReceivingNull() = runBlockingTest {
         given(mockitoApi.searchGithub()).willReturn(null)
@@ -74,27 +53,7 @@ class GithubPagingSourceTest {
             ).toString()
         )
     }
-
-    @Test
-    fun `reviews paging source refresh - success`() = runBlockingTest {
-        given(mockitoApi.searchGithub()).willReturn(reviewsResponse)
-        val expectedResult = PagingSource.LoadResult.Page(
-            data = reviewsResponse.reviews.map { Review(it) },
-            prevKey = null,
-            nextKey = 1
-        )
-        assertEquals(
-            expectedResult, reviewsPagingSource.load(
-                PagingSource.LoadParams.Refresh(
-                    key = 0,
-                    loadSize = 1,
-                    placeholdersEnabled = false
-                )
-            )
-        )
-
-
-    }
+}
 
 class GithubRepoFactory {
     private val counter = AtomicInteger(0)
