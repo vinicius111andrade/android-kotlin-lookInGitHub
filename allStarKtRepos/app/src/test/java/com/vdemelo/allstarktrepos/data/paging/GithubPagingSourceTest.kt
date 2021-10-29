@@ -25,25 +25,18 @@ class GithubPagingSourceTest {
     private val itemsPerPage = 3
     private val pageIndex = 1
 
-    lateinit var githubRepoFactory: GithubRepoFactory
-    lateinit var myMockApi: GithubApi
+    @Mock
+    lateinit var mockitoApi: GithubApi
 
-    @Mock lateinit var mockitoApi: GithubApi
-
-    lateinit var githubPagingSourceMyApi: GithubPagingSource
-    lateinit var githubPagingSourceMockitoApi: GithubPagingSource
+    lateinit var mockitoGithubPagingSource: GithubPagingSource
 
     @Before
     fun setup() {
+        MockitoAnnotations.openMocks(this)
+        mockitoGithubPagingSource = GithubPagingSource(mockitoApi , query)
+
         fakeApi = MockGithubApi()
         pagingSource = GithubPagingSource(fakeApi, query)
-
-        myMockApi = MockGithubApi()
-
-        MockitoAnnotations.openMocks(this)
-
-        githubPagingSourceMyApi = GithubPagingSource(myMockApi , query)
-        githubPagingSourceMockitoApi = GithubPagingSource(mockitoApi , query)
     }
 
     @Test
@@ -51,15 +44,17 @@ class GithubPagingSourceTest {
         given(mockitoApi.searchGithub()).willReturn(null)
 
         val expectedResult = PagingSource.LoadResult.Error<Int, GithubRepo>(NullPointerException())
-        assertEquals(
-            expectedResult.toString(), githubPagingSourceMockitoApi.load(
-                PagingSource.LoadParams.Refresh(
-                    key = 0,
-                    loadSize = 1,
-                    placeholdersEnabled = false
-                )
-            ).toString()
+
+        val actualResult = mockitoGithubPagingSource.load(
+            PagingSource.LoadParams.Refresh(
+                key = 0,
+                loadSize = 1,
+                placeholdersEnabled = false
+            )
         )
+
+        assertEquals(expectedResult.toString(), actualResult.toString())
+
     }
 
     @Test
