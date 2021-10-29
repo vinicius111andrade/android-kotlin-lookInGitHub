@@ -7,6 +7,7 @@ import com.vdemelo.allstarktrepos.data.model.GithubRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.mockito.BDDMockito.given
@@ -78,6 +79,7 @@ class GithubPagingSourceTest {
         )
 
         assertEquals(expectedResult.toString(), actualResult.toString())
+        assertNotNull(actualResult)
 
     }
 
