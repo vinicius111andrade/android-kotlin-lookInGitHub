@@ -51,7 +51,9 @@ class MainActivity : AppCompatActivity() {
         pagingData: Flow<PagingData<GithubRepo>>,
         uiActions: (UiAction) -> Unit
     ) {
+
         val githubRepoAdapter = GithubRepoAdapter()
+
         recyclerview.adapter = githubRepoAdapter.withLoadStateHeaderAndFooter(
             header = GithubLoadStateAdapter { githubRepoAdapter.retry() },
             footer = GithubLoadStateAdapter { githubRepoAdapter.retry() }
@@ -73,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         uiState: StateFlow<UiState>,
         onQueryChanged: (UiAction.Search) -> Unit
     ) {
+
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 updateRepoListFromInput(onQueryChanged)
@@ -81,6 +84,7 @@ class MainActivity : AppCompatActivity() {
                 false
             }
         }
+
         searchEditText.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 updateRepoListFromInput(onQueryChanged)
@@ -121,10 +125,9 @@ class MainActivity : AppCompatActivity() {
                 if (dy != 0) onScrollChanged(UiAction.Scroll(currentQuery = uiState.value.query))
             }
         })
+
         val notLoading = githubRepoAdapter.loadStateFlow
-            // Only emit when REFRESH LoadState for RemoteMediator changes.
             .distinctUntilChangedBy { it.source.refresh }
-            // Only react to cases where Remote REFRESH completes i.e., NotLoading.
             .map { it.source.refresh is LoadState.NotLoading }
 
         val hasNotScrolledForCurrentSearch = uiState
@@ -135,8 +138,7 @@ class MainActivity : AppCompatActivity() {
             notLoading,
             hasNotScrolledForCurrentSearch,
             Boolean::and
-        )
-            .distinctUntilChanged()
+        ).distinctUntilChanged()
 
         lifecycleScope.launch {
             pagingData.collectLatest(githubRepoAdapter::submitData)
@@ -151,16 +153,15 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             githubRepoAdapter.loadStateFlow.collect { loadState ->
                 val isListEmpty = loadState.refresh is LoadState.NotLoading && githubRepoAdapter.itemCount == 0
-                // show empty list
+
                 emptyListMessage.isVisible = isListEmpty
-                // Only show the list if refresh succeeds.
+
                 recyclerview.isVisible = !isListEmpty
-                // Show loading spinner during initial load or refresh.
+
                 progressBar.isVisible = loadState.source.refresh is LoadState.Loading
-                // Show the retry state if initial load or refresh fails.
+
                 retryButton.isVisible = loadState.source.refresh is LoadState.Error
 
-                // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
                 val errorState = loadState.source.append as? LoadState.Error
                     ?: loadState.source.prepend as? LoadState.Error
                     ?: loadState.append as? LoadState.Error
