@@ -18,7 +18,12 @@ import java.util.concurrent.atomic.AtomicInteger
 @ExperimentalCoroutinesApi
 class GithubPagingSourceTest {
 
-    val query = "Random"
+    lateinit var fakeApi: MockGithubApi
+    lateinit var pagingSource: GithubPagingSource
+    private val query = "Random"
+    private val numberOfItems = 2
+    private val itemsPerPage = 3
+    private val pageIndex = 1
 
     lateinit var githubRepoFactory: GithubRepoFactory
     lateinit var myMockApi: GithubApi
@@ -30,6 +35,9 @@ class GithubPagingSourceTest {
 
     @Before
     fun setup() {
+        fakeApi = MockGithubApi()
+        pagingSource = GithubPagingSource(fakeApi, query)
+
         myMockApi = MockGithubApi()
 
         MockitoAnnotations.openMocks(this)
@@ -53,6 +61,33 @@ class GithubPagingSourceTest {
             ).toString()
         )
     }
+
+    @Test
+    fun loadRefresh() = runBlockingTest {
+
+        val key = if(pageIndex == 1) null else pageIndex - 1
+
+        val expectedResult = PagingSource.LoadResult.Page(
+            data = fakeApi.searchGithub(
+                query = query,
+                per_page = numberOfItems
+            ).items,
+            prevKey = key,
+            nextKey = pageIndex + (numberOfItems / itemsPerPage)
+        )
+
+        val actualResult = pagingSource.load(
+            PagingSource.LoadParams.Refresh(
+                key = key,
+                loadSize = numberOfItems,
+                placeholdersEnabled = false
+            )
+        )
+
+        assertEquals(expectedResult.toString(), actualResult.toString())
+
+    }
+
 }
 
 class GithubRepoFactory {
