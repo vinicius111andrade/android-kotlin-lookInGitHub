@@ -16,17 +16,17 @@ import org.mockito.MockitoAnnotations
 @ExperimentalCoroutinesApi
 class GithubPagingSourceTest {
 
-    lateinit var fakeApi: MockGithubApi
-    lateinit var pagingSource: GithubPagingSource
+    private lateinit var fakeApi: MockGithubApi
+    private lateinit var pagingSource: GithubPagingSource
     private val query = "Random"
     private val numberOfItems = 2
     private val itemsPerPage = 3
     private val pageIndex = 1
 
     @Mock
-    lateinit var mockitoApi: GithubApi
+    private lateinit var mockitoApi: GithubApi
 
-    lateinit var mockitoGithubPagingSource: GithubPagingSource
+    private lateinit var mockitoGithubPagingSource: GithubPagingSource
 
     @Before
     fun setup() {
