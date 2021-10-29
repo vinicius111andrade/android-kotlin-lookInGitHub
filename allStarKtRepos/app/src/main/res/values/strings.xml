@@ -1,7 +1,7 @@
 <resources>
 
     <!-- App -->
-    <string name="app_name">AllStarKtRepos</string>
+    <string name="app_name">LookIn GitHub</string>
 
     <!-- Screen Titles -->
     <string name="title_recycler_view">Most Starred Kotlin Repositories</string>
