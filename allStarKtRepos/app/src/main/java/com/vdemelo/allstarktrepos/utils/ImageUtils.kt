@@ -24,6 +24,7 @@ fun ImageView.loadImage(uri: String?, progressDrawable: CircularProgressDrawable
     val options = RequestOptions()
         .placeholder(progressDrawable)
         .error(R.drawable.account_circle)
+
     Glide.with(context)
         .setDefaultRequestOptions(options)
         .load(uri)

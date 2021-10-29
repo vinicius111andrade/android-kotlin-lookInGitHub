@@ -17,10 +17,6 @@ class GithubRepository(
     private val apiService: GithubApi
 ) {
 
-    /**
-     * Search repositories whose names match the query, exposed as a stream of data that will emit
-     * every time we get more data from the network.
-     */
     fun getSearchResultStream(query: String): Flow<PagingData<GithubRepo>> {
 
         Timber.d("GithubRepository ---- New query: $query")
