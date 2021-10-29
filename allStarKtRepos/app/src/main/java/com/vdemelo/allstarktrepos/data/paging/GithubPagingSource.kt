@@ -54,6 +54,10 @@ class GithubPagingSource(
             LoadResult.Error(exception)
         }
 
+        catch (exception: RuntimeException) {
+            LoadResult.Error(exception)
+        }
+
     }
 
     override fun getRefreshKey(state: PagingState<Int, GithubRepo>): Int? {
