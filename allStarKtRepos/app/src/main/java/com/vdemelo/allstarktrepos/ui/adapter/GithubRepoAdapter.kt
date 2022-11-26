@@ -8,7 +8,7 @@ import com.vdemelo.allstarktrepos.data.model.GithubRepo
 class GithubRepoAdapter : PagingDataAdapter<GithubRepo, GithubRepoViewHolder>(REPO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GithubRepoViewHolder {
-        val binding = GithubRepoViewHolder.inflateViewBinding(parent, viewType)
+        val binding = GithubRepoViewHolder.inflateViewBinding(parent)
         return GithubRepoViewHolder(binding)
     }
 

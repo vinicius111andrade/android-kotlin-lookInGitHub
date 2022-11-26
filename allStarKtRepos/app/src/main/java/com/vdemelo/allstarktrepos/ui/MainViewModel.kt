@@ -1,6 +1,5 @@
 package com.vdemelo.allstarktrepos.ui
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -11,12 +10,9 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 private const val DEFAULT_QUERY = "kotlin"
-private const val LAST_SEARCH_QUERY: String = "last_search_query"
-private const val LAST_QUERY_SCROLLED: String = "last_query_scrolled"
 
 class MainViewModel(
     private val repository: GithubRepository,
-    private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     /**
@@ -31,10 +27,20 @@ class MainViewModel(
      */
     val action: (UiAction) -> Unit
 
+//    override fun onCleared() {
+//        savedStateHandle[LAST_SEARCH_QUERY] = state.value.query
+//        savedStateHandle[LAST_QUERY_SCROLLED] = state.value.lastQueryScrolled
+//        super.onCleared()
+//    }
+
     init {
 
-        val initialQuery: String = savedStateHandle[LAST_SEARCH_QUERY] ?: DEFAULT_QUERY
-        val lastQueryScrolled: String = savedStateHandle[LAST_QUERY_SCROLLED] ?: DEFAULT_QUERY
+        val initialQuery: String = DEFAULT_QUERY
+        val lastQueryScrolled: String = DEFAULT_QUERY
+        //TODO - quando o activity morre eu to perdendo a query que está ativa,
+        // preciso salvar o valor de alguma forma, ou então resetar a caixa de texto tbm,
+        // a caixa de texto tá salvando, mas a viewmodel não. Posso pegar a query da caixa
+        // de texto, resolve.
         val actionStateFlow = MutableSharedFlow<UiAction>()
 
         val searches = actionStateFlow
@@ -76,12 +82,6 @@ class MainViewModel(
         action = { uiAction ->
             viewModelScope.launch { actionStateFlow.emit(uiAction) }
         }
-    }
-
-    override fun onCleared() {
-        savedStateHandle[LAST_SEARCH_QUERY] = state.value.query
-        savedStateHandle[LAST_QUERY_SCROLLED] = state.value.lastQueryScrolled
-        super.onCleared()
     }
 
     private fun searchGithub(queryString: String): Flow<PagingData<GithubRepo>> =

@@ -56,9 +56,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Koin
-    implementation 'org.koin:koin-android:1.0.2'
-    implementation 'org.koin:koin-android-viewmodel:1.0.2'
-    implementation 'org.koin:koin-androidx-scope:1.0.2'
+    implementation "io.insert-koin:koin-android:3.0.2"
 
     // RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.2.1'

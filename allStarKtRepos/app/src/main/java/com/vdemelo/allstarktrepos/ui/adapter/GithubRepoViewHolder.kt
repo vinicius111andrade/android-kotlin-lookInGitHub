@@ -14,7 +14,7 @@ class GithubRepoViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     companion object {
-        internal fun inflateViewBinding(parent: ViewGroup, viewType: Int): ItemListGithubRepoBinding {
+        internal fun inflateViewBinding(parent: ViewGroup): ItemListGithubRepoBinding {
             return ItemListGithubRepoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         }
     }

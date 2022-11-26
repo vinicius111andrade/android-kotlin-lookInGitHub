@@ -24,20 +24,20 @@ interface GithubApi {
         @Query("per_page") perPage: Int = PAGING_PAGE_SIZE
     ): SearchResponse
 
-    companion object {
-        fun create(): GithubApi {
-            val logger = HttpLoggingInterceptor { Timber.d("API $it") }
-            logger.level = HttpLoggingInterceptor.Level.BASIC
-
-            val client = OkHttpClient.Builder()
-                .addInterceptor(logger)
-                .build()
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(GithubApi::class.java)
-        }
-    }
+//    companion object {
+//        fun create(): GithubApi {
+//            val logger = HttpLoggingInterceptor { Timber.d("API $it") }
+//            logger.level = HttpLoggingInterceptor.Level.BASIC
+//
+//            val client = OkHttpClient.Builder()
+//                .addInterceptor(logger)
+//                .build()
+//            return Retrofit.Builder()
+//                .baseUrl(BASE_URL)
+//                .client(client)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build()
+//                .create(GithubApi::class.java)
+//        }
+//    }
 }
