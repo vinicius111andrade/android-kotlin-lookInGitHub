@@ -68,7 +68,7 @@
                 android:layout_marginLeft="@dimen/spacing_xmedium"
                 android:layout_marginTop="@dimen/spacing_xmedium"
                 android:contentDescription="@string/description_git_fork"
-                android:src="@drawable/git_fork"
+                android:src="@drawable/ic_branch_fork"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imgStar" />
 
