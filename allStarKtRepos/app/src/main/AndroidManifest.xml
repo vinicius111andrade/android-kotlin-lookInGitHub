@@ -6,9 +6,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/source_repository_multiple"
+        android:icon="@drawable/ic_source_repository"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/source_repository_multiple"
+        android:roundIcon="@drawable/ic_source_repository"
         android:supportsRtl="true"
         android:theme="@style/Theme.AllStarKtRepos">
         <activity

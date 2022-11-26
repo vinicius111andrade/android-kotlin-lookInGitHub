@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(
             this,
             Injection.provideViewModelFactory(owner = this)
-        ).get(MainViewModel::class.java)
+        )[MainViewModel::class.java]
 
         initUI()
     }

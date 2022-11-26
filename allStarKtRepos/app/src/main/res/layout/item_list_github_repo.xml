@@ -42,7 +42,7 @@
                 android:layout_marginLeft="@dimen/spacing_xmedium"
                 android:layout_marginTop="@dimen/spacing_large"
                 android:contentDescription="@string/description_star"
-                android:src="@drawable/star"
+                android:src="@drawable/ic_star_outline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvRepositoryName"
                 app:tint="@color/black" />
