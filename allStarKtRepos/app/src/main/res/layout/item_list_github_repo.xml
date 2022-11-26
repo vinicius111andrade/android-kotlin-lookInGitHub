@@ -1,129 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/repoCard"
+    style="@style/allStarKtRepos.CardView.Issue"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_middle">
 
-    <data>
+    <TextView
+        android:id="@+id/tvRepositoryName"
+        style="@style/allStarKtRepos.texts.itemList.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/repo_title" />
 
-        <variable
-            name="githubRepo"
-            type="com.vdemelo.allstarktrepos.data.model.GithubRepo" />
-    </data>
+    <ImageView
+        android:id="@+id/imgStar"
+        android:layout_width="@dimen/ic_size_small"
+        android:layout_height="@dimen/ic_size_small"
+        android:layout_marginStart="@dimen/spacing_xmedium"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:contentDescription="@string/description_star"
+        android:src="@drawable/ic_star_outline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRepositoryName"
+        app:tint="@color/black" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/repoCard"
-        style="@style/allStarKtRepos.CardView.Issue"
-        android:clickable="true"
-        android:focusable="true">
+    <TextView
+        android:id="@+id/tvStarCount"
+        style="@style/allStarKtRepos.texts.itemList.Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xmedium"
+        app:layout_constraintBottom_toBottomOf="@id/imgStar"
+        app:layout_constraintStart_toEndOf="@id/imgStar"
+        app:layout_constraintTop_toTopOf="@id/imgStar"
+        tools:text="2000" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/spacing_middle">
+    <ImageView
+        android:id="@+id/imgFork"
+        android:layout_width="@dimen/ic_size_small"
+        android:layout_height="@dimen/ic_size_small"
+        android:layout_marginStart="@dimen/spacing_xmedium"
+        android:layout_marginTop="@dimen/spacing_xmedium"
+        android:contentDescription="@string/description_git_fork"
+        android:src="@drawable/ic_branch_fork"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgStar" />
 
-            <TextView
-                android:id="@+id/tvRepositoryName"
-                style="@style/allStarKtRepos.texts.itemList.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{githubRepo.name}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/repo_title" />
+    <TextView
+        android:id="@+id/tvForkCount"
+        style="@style/allStarKtRepos.texts.itemList.Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xmedium"
+        app:layout_constraintBottom_toBottomOf="@id/imgFork"
+        app:layout_constraintStart_toEndOf="@id/imgFork"
+        app:layout_constraintTop_toTopOf="@id/imgFork"
+        tools:text="40" />
 
-            <ImageView
-                android:id="@+id/imgStar"
-                android:layout_width="@dimen/ic_size_small"
-                android:layout_height="@dimen/ic_size_small"
-                android:layout_marginStart="@dimen/spacing_xmedium"
-                android:layout_marginLeft="@dimen/spacing_xmedium"
-                android:layout_marginTop="@dimen/spacing_large"
-                android:contentDescription="@string/description_star"
-                android:src="@drawable/ic_star_outline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvRepositoryName"
-                app:tint="@color/black" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
 
-            <TextView
-                android:id="@+id/tvStarCount"
-                style="@style/allStarKtRepos.texts.itemList.Description"
-                numberToText="@{githubRepo.stargazersCount}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_xmedium"
-                android:layout_marginLeft="@dimen/spacing_xmedium"
-                app:layout_constraintBottom_toBottomOf="@id/imgStar"
-                app:layout_constraintStart_toEndOf="@id/imgStar"
-                app:layout_constraintTop_toTopOf="@id/imgStar"
-                tools:text="2000" />
+    <ImageView
+        android:id="@+id/imgOwner"
+        android:layout_width="@dimen/ic_size_large"
+        android:layout_height="@dimen/ic_size_large"
+        android:layout_marginStart="@dimen/spacing_xmedium"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:contentDescription="@string/description_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/tvRepositoryName" />
 
-            <ImageView
-                android:id="@+id/imgFork"
-                android:layout_width="@dimen/ic_size_small"
-                android:layout_height="@dimen/ic_size_small"
-                android:layout_marginStart="@dimen/spacing_xmedium"
-                android:layout_marginLeft="@dimen/spacing_xmedium"
-                android:layout_marginTop="@dimen/spacing_xmedium"
-                android:contentDescription="@string/description_git_fork"
-                android:src="@drawable/ic_branch_fork"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imgStar" />
+    <TextView
+        android:id="@+id/tvOwnerName"
+        style="@style/allStarKtRepos.texts.itemList.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xmedium"
+        android:layout_marginTop="@dimen/spacing_xmedium"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/imgOwner"
+        tools:text="Owner Name" />
 
-            <TextView
-                android:id="@+id/tvForkCount"
-                style="@style/allStarKtRepos.texts.itemList.Description"
-                numberToText="@{githubRepo.forksCount}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_xmedium"
-                android:layout_marginLeft="@dimen/spacing_xmedium"
-                app:layout_constraintBottom_toBottomOf="@id/imgFork"
-                app:layout_constraintStart_toEndOf="@id/imgFork"
-                app:layout_constraintTop_toTopOf="@id/imgFork"
-                tools:text="40" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.3" />
-
-            <ImageView
-                android:id="@+id/imgOwner"
-                imageUrl="@{githubRepo.owner.avatarUrl}"
-                android:layout_width="@dimen/ic_size_large"
-                android:layout_height="@dimen/ic_size_large"
-                android:layout_marginStart="@dimen/spacing_xmedium"
-                android:layout_marginLeft="@dimen/spacing_xmedium"
-                android:layout_marginTop="@dimen/spacing_large"
-                android:contentDescription="@string/description_avatar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/guideline"
-                app:layout_constraintTop_toBottomOf="@id/tvRepositoryName" />
-
-            <TextView
-                android:id="@+id/tvOwnerName"
-                style="@style/allStarKtRepos.texts.itemList.Description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_xmedium"
-                android:layout_marginLeft="@dimen/spacing_xmedium"
-                android:layout_marginTop="@dimen/spacing_xmedium"
-                android:gravity="center_horizontal"
-                android:text="@{githubRepo.owner.login}"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/guideline"
-                app:layout_constraintTop_toBottomOf="@id/imgOwner"
-                tools:text="Owner Name" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>
