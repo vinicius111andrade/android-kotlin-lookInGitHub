@@ -7,11 +7,12 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.vdemelo.allstarktrepos.data.model.GithubRepo
 import com.vdemelo.allstarktrepos.data.repository.GithubRepository
-import com.vdemelo.allstarktrepos.utils.Constants.DEFAULT_QUERY
-import com.vdemelo.allstarktrepos.utils.Constants.LAST_QUERY_SCROLLED
-import com.vdemelo.allstarktrepos.utils.Constants.LAST_SEARCH_QUERY
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+
+private const val DEFAULT_QUERY = "kotlin"
+private const val LAST_SEARCH_QUERY: String = "last_search_query"
+private const val LAST_QUERY_SCROLLED: String = "last_query_scrolled"
 
 class MainViewModel(
     private val repository: GithubRepository,
@@ -32,8 +33,8 @@ class MainViewModel(
 
     init {
 
-        val initialQuery: String = savedStateHandle.get(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
-        val lastQueryScrolled: String = savedStateHandle.get(LAST_QUERY_SCROLLED) ?: DEFAULT_QUERY
+        val initialQuery: String = savedStateHandle[LAST_SEARCH_QUERY] ?: DEFAULT_QUERY
+        val lastQueryScrolled: String = savedStateHandle[LAST_QUERY_SCROLLED] ?: DEFAULT_QUERY
         val actionStateFlow = MutableSharedFlow<UiAction>()
 
         val searches = actionStateFlow

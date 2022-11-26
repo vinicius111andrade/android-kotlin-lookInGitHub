@@ -64,7 +64,7 @@ class GithubPagingSourceTest {
         val expectedResult = PagingSource.LoadResult.Page(
             data = fakeApi.searchGithub(
                 query = query,
-                per_page = numberOfItems
+                perPage = numberOfItems
             ).items,
             prevKey = key,
             nextKey = pageIndex + (numberOfItems / itemsPerPage)

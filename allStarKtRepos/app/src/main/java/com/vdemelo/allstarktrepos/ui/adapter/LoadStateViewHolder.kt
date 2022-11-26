@@ -8,9 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vdemelo.allstarktrepos.R
 import com.vdemelo.allstarktrepos.databinding.LoadStateFooterViewItemBinding
 
-/**
- * Created by Vinicius Andrade on 10/26/2021.
- */
 class LoadStateViewHolder(
     private val binding: LoadStateFooterViewItemBinding,
     retry: () -> Unit

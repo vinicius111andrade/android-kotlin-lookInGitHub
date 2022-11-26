@@ -8,9 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vdemelo.allstarktrepos.data.model.GithubRepo
 import com.vdemelo.allstarktrepos.databinding.ItemListGithubRepoBinding
 
-/**
- * Created by Vinicius Andrade on 10/25/2021.
- */
 class GithubRepoViewHolder(
     var binding: ItemListGithubRepoBinding
 ) : RecyclerView.ViewHolder(binding.root) {

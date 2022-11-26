@@ -6,7 +6,8 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vdemelo.allstarktrepos.data.model.GithubRepo
 import com.vdemelo.allstarktrepos.databinding.ActivityMainBinding
 import com.vdemelo.allstarktrepos.di.Injection
-import com.vdemelo.allstarktrepos.ui.adapter.GithubRepoAdapter
 import com.vdemelo.allstarktrepos.ui.adapter.GithubLoadStateAdapter
+import com.vdemelo.allstarktrepos.ui.adapter.GithubRepoAdapter
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 

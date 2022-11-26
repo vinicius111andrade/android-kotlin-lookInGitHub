@@ -5,9 +5,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.vdemelo.allstarktrepos.data.model.GithubRepo
 
-/**
- * Created by Vinicius Andrade on 10/25/2021.
- */
 class GithubRepoAdapter : PagingDataAdapter<GithubRepo, GithubRepoViewHolder>(REPO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GithubRepoViewHolder {

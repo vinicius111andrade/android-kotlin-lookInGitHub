@@ -7,11 +7,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.vdemelo.allstarktrepos.R
 
-/**
- * Created by Vinicius Andrade on 10/27/2021.
- */
-
-
 fun getProgressDrawable(context: Context): CircularProgressDrawable {
     return CircularProgressDrawable(context).apply {
         strokeWidth = 10f

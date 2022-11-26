@@ -38,18 +38,18 @@ class MockGithubApi: GithubApi {
         query: String,
         sort: String,
         page: Int,
-        per_page: Int
+        perPage: Int
     ): SearchResponse {
 
         val factory = GithubRepoFactory()
         val items: MutableList<GithubRepo> = mutableListOf()
 
-        for (i in 0..per_page) {
+        for (i in 0..perPage) {
             items.add(factory.createGithubRepo(query))
         }
 
         return  SearchResponse(
-            total = per_page,
+            total = perPage,
             items = items
         )
     }

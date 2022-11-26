@@ -1,12 +1,8 @@
 package com.vdemelo.allstarktrepos.data.model
 
 import com.google.gson.annotations.SerializedName
-import com.vdemelo.allstarktrepos.data.model.Owner
 
-/**
- * Created by Vinicius Andrade on 10/23/2021.
- */
-data class GithubRepo (
+class GithubRepo (
     @field:SerializedName("id") val id: Long,
     @field:SerializedName("name") val name: String = "",
     @field:SerializedName("full_name") val fullName: String = "",

@@ -3,23 +3,19 @@ package com.vdemelo.allstarktrepos.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.vdemelo.allstarktrepos.data.api.GithubApi
-import com.vdemelo.allstarktrepos.data.api.IN_QUALIFIER
 import com.vdemelo.allstarktrepos.data.model.GithubRepo
-import com.vdemelo.allstarktrepos.utils.Constants.GITHUB_STARTING_PAGE_INDEX
-import com.vdemelo.allstarktrepos.utils.Constants.NETWORK_PAGE_SIZE
-import retrofit2.HttpException
-import java.io.IOException
+import com.vdemelo.allstarktrepos.utils.Constants.PAGING_PAGE_SIZE
+import com.vdemelo.allstarktrepos.utils.Constants.PAGING_STARTING_PAGE_INDEX
 
-/**
- * Created by Vinicius Andrade on 10/26/2021.
- */
+private const val IN_QUALIFIER = "in:name,description"
+
 class GithubPagingSource(
     private val apiService: GithubApi,
     private val query: String
 ) : PagingSource<Int, GithubRepo>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GithubRepo> {
-        val position = params.key ?: GITHUB_STARTING_PAGE_INDEX
+        val position = params.key ?: PAGING_STARTING_PAGE_INDEX
         val apiQuery = query + IN_QUALIFIER
 
         return try {
@@ -27,7 +23,7 @@ class GithubPagingSource(
             val response = apiService.searchGithub(
                 query = apiQuery,
                 page = position,
-                per_page = params.loadSize
+                perPage = params.loadSize
             )
 
             val repos = response.items
@@ -36,25 +32,17 @@ class GithubPagingSource(
                 if (repos.isEmpty())
                     null
                 else
-                    position + (params.loadSize / NETWORK_PAGE_SIZE)
+                    position + (params.loadSize / PAGING_PAGE_SIZE)
 
 
             LoadResult.Page(
                 data = repos,
-                prevKey = if (position == GITHUB_STARTING_PAGE_INDEX) null else position - 1,
+                prevKey = if (position == PAGING_STARTING_PAGE_INDEX) null else position - 1,
                 nextKey = nextKey
             )
         }
 
-        catch (exception: IOException) {
-            LoadResult.Error(exception)
-        }
-
-        catch (exception: HttpException) {
-            LoadResult.Error(exception)
-        }
-
-        catch (exception: RuntimeException) {
+        catch (exception: Throwable) {
             LoadResult.Error(exception)
         }
 
@@ -64,7 +52,7 @@ class GithubPagingSource(
 
         val anchorPosition: Int? = state.anchorPosition
 
-        val currentPageObject:  PagingSource.LoadResult.Page<Int, GithubRepo>? =
+        val currentPageObject: LoadResult.Page<Int, GithubRepo>? =
             anchorPosition?.let {
             state.closestPageToPosition(it)
         }
