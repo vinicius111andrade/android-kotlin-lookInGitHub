@@ -23,5 +23,4 @@ class GithubRepository(
             }
         ).flow
 
-
 }
