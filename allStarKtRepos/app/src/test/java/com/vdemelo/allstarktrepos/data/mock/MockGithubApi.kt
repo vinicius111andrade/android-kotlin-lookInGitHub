@@ -6,9 +6,6 @@ import com.vdemelo.allstarktrepos.data.model.GithubRepo
 import com.vdemelo.allstarktrepos.data.model.Owner
 import java.util.concurrent.atomic.AtomicInteger
 
-/**
- * Created by Vinicius Andrade on 10/29/2021.
- */
 class GithubRepoFactory {
     private val counter = AtomicInteger(0)
     fun createGithubRepo(query : String) : GithubRepo {

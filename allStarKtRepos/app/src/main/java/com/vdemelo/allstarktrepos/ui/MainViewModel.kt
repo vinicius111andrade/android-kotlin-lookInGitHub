@@ -20,33 +20,21 @@ class MainViewModel(
      */
     val state: StateFlow<UiState>
 
-    val pagingDataFlow: Flow<PagingData<GithubRepo>>
-
     /**
      * Action the repository should take based on the state.
      */
     val action: (UiAction) -> Unit
 
-//    override fun onCleared() {
-//        savedStateHandle[LAST_SEARCH_QUERY] = state.value.query
-//        savedStateHandle[LAST_QUERY_SCROLLED] = state.value.lastQueryScrolled
-//        super.onCleared()
-//    }
+    val pagingDataFlow: Flow<PagingData<GithubRepo>>
 
     init {
 
-        val initialQuery: String = DEFAULT_QUERY
-        val lastQueryScrolled: String = DEFAULT_QUERY
-        //TODO - quando o activity morre eu to perdendo a query que está ativa,
-        // preciso salvar o valor de alguma forma, ou então resetar a caixa de texto tbm,
-        // a caixa de texto tá salvando, mas a viewmodel não. Posso pegar a query da caixa
-        // de texto, resolve.
         val actionStateFlow = MutableSharedFlow<UiAction>()
 
         val searches = actionStateFlow
             .filterIsInstance<UiAction.Search>()
             .distinctUntilChanged()
-            .onStart { emit(UiAction.Search(query = initialQuery)) }
+            .onStart { emit(UiAction.Search(query = DEFAULT_QUERY)) }
 
         val queriesScrolled = actionStateFlow
             .filterIsInstance<UiAction.Scroll>()
@@ -56,7 +44,7 @@ class MainViewModel(
                 started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
                 replay = 1
             )
-            .onStart { emit(UiAction.Scroll(currentQuery = lastQueryScrolled)) }
+            .onStart { emit(UiAction.Scroll(currentQuery = DEFAULT_QUERY)) }
 
         pagingDataFlow = searches
             .flatMapLatest { searchGithub(queryString = it.query) }
